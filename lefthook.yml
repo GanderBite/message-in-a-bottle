@@ -1,0 +1,17 @@
+post-merge:
+  parallel: true
+  jobs:
+    - name: 'Install Dependencies'
+      run: bun install
+    - name: 'Migrate Database'
+      run: bun run db:migrate
+pre-commit:
+  parallel: true
+  jobs:
+    - name: 'Lint'
+      run: bun run eslint {staged_files} --fix
+      glob: '*.{js,mjs,jsx,ts,tsx}'
+      stage_fixed: true
+    - name: 'Typecheck'
+      run: 'bun run typecheck'
+      glob: '*.{ts,tsx}'
